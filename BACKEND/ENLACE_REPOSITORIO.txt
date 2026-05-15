@@ -1,1 +1,5 @@
 https://github.com/jgnarvaez/Programa-Git
+
+Aprendices:
+Camila Conde
+José Narváez

@@ -14,7 +14,7 @@ public class ConexionBD {
     // Constantes de configuración de la base de datos
     private static final String URL = "jdbc:mysql://localhost:3306/tienda_adidas?serverTimezone=UTC";
     private static final String USUARIO = "root";
-    private static final String PASSWORD = ""; // Cambiar según configuración local
+    private static final String PASSWORD = "admin"; // Cambiar según configuración local
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
 
     /**

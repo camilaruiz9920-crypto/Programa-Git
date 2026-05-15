@@ -17,14 +17,13 @@ public class ProductoDAO {
      * @return true si la inserción fue exitosa.
      */
     public boolean insertar(Producto p) {
-        String sql = "INSERT INTO producto (nombre, descripcion, precio, stock, categoria) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO PRODUCTO (nombre_producto, descripcion, precio_base, id_categoria) VALUES (?, ?, ?, ?)";
         try (Connection con = ConexionBD.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, p.getNombre());
+            ps.setString(1, p.getNombreProducto());
             ps.setString(2, p.getDescripcion());
-            ps.setDouble(3, p.getPrecio());
-            ps.setInt(4, p.getStock());
-            ps.setString(5, p.getCategoria());
+            ps.setDouble(3, p.getPrecioBase());
+            ps.setInt(4, p.getIdCategoria());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             System.err.println("Error al insertar: " + e.getMessage());
@@ -38,7 +37,7 @@ public class ProductoDAO {
      */
     public List<Producto> listarTodos() {
         List<Producto> lista = new ArrayList<>();
-        String sql = "SELECT * FROM producto";
+        String sql = "SELECT * FROM PRODUCTO";
         try (Connection con = ConexionBD.getConnection();
              Statement st = con.createStatement();
              ResultSet rs = st.executeQuery(sql)) {
@@ -57,7 +56,7 @@ public class ProductoDAO {
      * @return El objeto Producto encontrado o null.
      */
     public Producto buscarPorId(int id) {
-        String sql = "SELECT * FROM producto WHERE id_producto = ?";
+        String sql = "SELECT * FROM PRODUCTO WHERE id_producto = ?";
         try (Connection con = ConexionBD.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
@@ -76,15 +75,14 @@ public class ProductoDAO {
      * @return true si la actualización fue exitosa.
      */
     public boolean actualizar(Producto p) {
-        String sql = "UPDATE producto SET nombre=?, descripcion=?, precio=?, stock=?, categoria=? WHERE id_producto=?";
+        String sql = "UPDATE PRODUCTO SET nombre_producto=?, descripcion=?, precio_base=?, id_categoria=? WHERE id_producto=?";
         try (Connection con = ConexionBD.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, p.getNombre());
+            ps.setString(1, p.getNombreProducto());
             ps.setString(2, p.getDescripcion());
-            ps.setDouble(3, p.getPrecio());
-            ps.setInt(4, p.getStock());
-            ps.setString(5, p.getCategoria());
-            ps.setInt(6, p.getIdProducto());
+            ps.setDouble(3, p.getPrecioBase());
+            ps.setInt(4, p.getIdCategoria());
+            ps.setInt(5, p.getIdProducto());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             System.err.println("Error al actualizar: " + e.getMessage());
@@ -98,7 +96,7 @@ public class ProductoDAO {
      * @return true si la eliminación fue exitosa.
      */
     public boolean eliminar(int id) {
-        String sql = "DELETE FROM producto WHERE id_producto = ?";
+        String sql = "DELETE FROM PRODUCTO WHERE id_producto = ?";
         try (Connection con = ConexionBD.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
@@ -115,11 +113,10 @@ public class ProductoDAO {
     private Producto extraerProducto(ResultSet rs) throws SQLException {
         return new Producto(
             rs.getInt("id_producto"),
-            rs.getString("nombre"),
+            rs.getString("nombre_producto"),
             rs.getString("descripcion"),
-            rs.getDouble("precio"),
-            rs.getInt("stock"),
-            rs.getString("categoria")
+            rs.getDouble("precio_base"),
+            rs.getInt("id_categoria")
         );
     }
 }

@@ -62,11 +62,10 @@ public class Main {
 
     private static void insertarProducto() {
         Producto p = new Producto();
-        System.out.print("Nombre: "); p.setNombre(scanner.nextLine());
+        System.out.print("Nombre: "); p.setNombreProducto(scanner.nextLine());
         System.out.print("Descripción: "); p.setDescripcion(scanner.nextLine());
-        p.setPrecio(leerDouble("Precio: "));
-        p.setStock(leerEntero("Stock: "));
-        System.out.print("Categoría: "); p.setCategoria(scanner.nextLine());
+        p.setPrecioBase(leerDouble("Precio Base: "));
+        p.setIdCategoria(leerEntero("ID Categoría: "));
 
         if (dao.insertar(p)) System.out.println("Producto guardado con éxito.");
     }
@@ -78,9 +77,9 @@ public class Main {
             System.out.println("Producto no existe.");
             return;
         }
-        System.out.print("Nuevo Nombre (" + p.getNombre() + "): "); p.setNombre(scanner.nextLine());
-        p.setPrecio(leerDouble("Nuevo Precio (" + p.getPrecio() + "): "));
-        p.setStock(leerEntero("Nuevo Stock (" + p.getStock() + "): "));
+        System.out.print("Nuevo Nombre (" + p.getNombreProducto() + "): "); p.setNombreProducto(scanner.nextLine());
+        p.setPrecioBase(leerDouble("Nuevo Precio Base (" + p.getPrecioBase() + "): "));
+        p.setIdCategoria(leerEntero("Nuevo ID Categoría (" + p.getIdCategoria() + "): "));
         
         if (dao.actualizar(p)) System.out.println("Actualizado correctamente.");
     }
