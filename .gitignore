@@ -1,0 +1,25 @@
+# Archivos compilados de Java
+*.class
+**/bin/
+**/out/
+
+# Librerías y paquetes
+*.jar
+!**/lib/*.jar # Permitir subir los conectores en la carpeta lib
+
+# Configuraciones de IDE
+.project
+.classpath
+.settings/
+.idea/
+*.iml
+.vscode/
+nbproject/
+build/
+dist/
+
+# Archivos temporales y de sistema
+Thumbs.db
+.DS_Store
+*.log
+*.tmp
