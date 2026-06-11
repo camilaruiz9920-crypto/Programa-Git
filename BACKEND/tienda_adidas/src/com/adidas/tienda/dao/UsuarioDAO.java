@@ -55,6 +55,61 @@ public class UsuarioDAO {
         return null;
     }
 
+    public Usuario buscarPorId(int id) {
+        String sql = "SELECT * FROM USUARIO WHERE id_usuario = ?";
+        try (Connection con = ConexionBD.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return extraerUsuario(rs);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al buscar usuario por ID: " + e.getMessage());
+        }
+        return null;
+    }
+
+    public boolean actualizar(Usuario u) {
+        String sql = "UPDATE USUARIO SET nombre_completo = ?, email = ?, contrasena_hash = ?, telefono = ?, activo = ? WHERE id_usuario = ?";
+        try (Connection con = ConexionBD.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, u.getNombreCompleto());
+            ps.setString(2, u.getEmail());
+            ps.setString(3, u.getContrasenaHash());
+            ps.setString(4, u.getTelefono());
+            ps.setBoolean(5, u.isActivo());
+            ps.setInt(6, u.getIdUsuario());
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("Error al actualizar usuario: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean eliminar(int id) {
+        String sql = "DELETE FROM USUARIO WHERE id_usuario = ?";
+        try (Connection con = ConexionBD.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("Error al eliminar usuario (puede tener registros asociados): " + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean desactivar(int id) {
+        String sql = "UPDATE USUARIO SET activo = 0 WHERE id_usuario = ?";
+        try (Connection con = ConexionBD.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("Error al desactivar usuario: " + e.getMessage());
+            return false;
+        }
+    }
+
     private Usuario extraerUsuario(ResultSet rs) throws SQLException {
         return new Usuario(
             rs.getInt("id_usuario"),

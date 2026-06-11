@@ -1,8 +1,11 @@
 package com.adidas.tienda.db;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 /**
  * Clase encargada de gestionar la conexión a la base de datos MySQL.
@@ -11,11 +14,27 @@ import java.sql.SQLException;
  */
 public class ConexionBD {
 
-    // Constantes de configuración de la base de datos
-    private static final String URL = "jdbc:mysql://localhost:3306/tienda_adidas?serverTimezone=UTC";
-    private static final String USUARIO = "root";
-    private static final String PASSWORD = "admin"; // Cambiar según configuración local
-    private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
+    private static String url;
+    private static String usuario;
+    private static String password;
+    private static String driver;
+
+    static {
+        Properties properties = new Properties();
+        try (FileInputStream fis = new FileInputStream("config.properties")) {
+            properties.load(fis);
+            url = properties.getProperty("db.url", "jdbc:mysql://localhost:3306/tienda_adidas?serverTimezone=UTC");
+            usuario = properties.getProperty("db.user", "root");
+            password = properties.getProperty("db.password", "admin");
+            driver = properties.getProperty("db.driver", "com.mysql.cj.jdbc.Driver");
+        } catch (IOException e) {
+            System.err.println("Advertencia: No se pudo cargar config.properties, usando valores por defecto. " + e.getMessage());
+            url = "jdbc:mysql://localhost:3306/tienda_adidas?serverTimezone=UTC";
+            usuario = "root";
+            password = "admin";
+            driver = "com.mysql.cj.jdbc.Driver";
+        }
+    }
 
     /**
      * Establece y retorna una conexión con MySQL.
@@ -27,9 +46,9 @@ public class ConexionBD {
         Connection conexion = null;
         try {
             // Registro del driver JDBC
-            Class.forName(DRIVER);
+            Class.forName(driver);
             // Obtención de la conexión
-            conexion = DriverManager.getConnection(URL, USUARIO, PASSWORD);
+            conexion = DriverManager.getConnection(url, usuario, password);
         } catch (ClassNotFoundException e) {
             System.err.println("Error: Driver MySQL no encontrado. " + e.getMessage());
         }

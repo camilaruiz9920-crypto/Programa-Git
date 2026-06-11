@@ -1,12 +1,14 @@
 # Tienda Virtual Adidas Colombia - Módulo Backend (Versión Extendida)
 
-Este proyecto es el resultado de la evidencia **GA6-220501096-AA2-EV03**. Consiste en un sistema backend robusto desarrollado en Java utilizando JDBC puro, diseñado para gestionar una tienda virtual completa con usuarios, productos, variantes, carritos y pedidos.
+Este proyecto es el resultado de la evidencia **GA7-220501096-AA2-EV01**. Consiste en un sistema backend robusto desarrollado en Java utilizando JDBC puro, diseñado para gestionar una tienda virtual completa con usuarios, productos, variantes, carritos y pedidos.
 
-## 🚀 Características Principales
+## 🚀 Características Principales y Alcance de los CRUDs
 - **Arquitectura DAO**: Separación clara entre la lógica de negocio y el acceso a datos.
-- **Esquema Relacional Completo**: Gestión de Roles, Direcciones, Categorías, Productos con Variantes (talla/color) y Pedidos.
-- **Seguridad**: Uso de `PreparedStatement` para prevenir SQL Injection.
-- **Documentación**: Código estandarizado y documentado.
+- **Seguridad**: Uso de `PreparedStatement` para prevenir SQL Injection y parametrización de credenciales externas mediante un archivo `config.properties`.
+- **Alcance del CRUD Implementado**:
+  - **Módulo de Productos (CRUD Completo)**: Permite registrar, listar todos, buscar por ID, actualizar datos básicos de un producto y eliminar productos físicamente de la base de datos.
+  - **Módulo de Usuarios (CRUD Completo)**: Permite registrar nuevos usuarios, listar todos los usuarios, buscar por correo electrónico, actualizar su información (nombre, teléfono y estado activo) y eliminar o desactivar usuarios.
+  - **Otros Módulos**: Estructuras de datos y modelos definidos para Roles, Direcciones, Categorías, Variantes y Pedidos, delimitados en esta fase como base relacional para expansiones futuras.
 
 ## 🛠️ Requisitos del Sistema
 - **Java JDK 17** o superior.
@@ -27,10 +29,11 @@ Este proyecto es el resultado de la evidencia **GA6-220501096-AA2-EV03**. Consis
    Ejecuta el archivo `script_bd_tienda_adidas.sql` en tu MySQL Workbench o terminal para crear la base de datos `tienda_adidas` con sus datos iniciales.
 
 2. **Conexión**:
-   Abre `src/com/adidas/tienda/db/ConexionBD.java` y ajusta tus credenciales:
-   ```java
-   private static final String USUARIO = "tu_usuario";
-   private static final String PASSWORD = "tu_password";
+   Abre el archivo `config.properties` en la raíz del proyecto backend y configura tus credenciales locales:
+   ```properties
+   db.url=jdbc:mysql://localhost:3306/tienda_adidas?serverTimezone=UTC
+   db.user=root
+   db.password=tu_password
    ```
 
 3. **Prueba de Conexión**:
